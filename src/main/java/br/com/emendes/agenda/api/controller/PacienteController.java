@@ -1,5 +1,8 @@
 package br.com.emendes.agenda.api.controller;
 
+import br.com.emendes.agenda.api.mapper.PacienteMapper;
+import br.com.emendes.agenda.api.request.PacienteRequest;
+import br.com.emendes.agenda.api.response.PacienteResponse;
 import br.com.emendes.agenda.domain.entity.Paciente;
 import br.com.emendes.agenda.domain.service.PacienteService;
 import lombok.RequiredArgsConstructor;
@@ -16,34 +19,36 @@ import java.util.Optional;
 public class PacienteController {
 
   private final PacienteService pacienteService;
+  private final PacienteMapper mapper;
 
   @PostMapping
-  public ResponseEntity<Paciente> save(@RequestBody Paciente paciente) {
-    Paciente savedPaciente = pacienteService.save(paciente);
+  public ResponseEntity<PacienteResponse> save(@RequestBody PacienteRequest pacienteRequest) {
 
-    return ResponseEntity.status(HttpStatus.CREATED).body(savedPaciente);
+    Paciente savedPaciente = pacienteService.save(mapper.toPaciente(pacienteRequest));
+
+    return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toPacienteResponse(savedPaciente));
   }
 
   @GetMapping
-  public ResponseEntity<List<Paciente>> listAll() {
-    return ResponseEntity.status(HttpStatus.OK).body(pacienteService.listAll());
+  public ResponseEntity<List<PacienteResponse>> listAll() {
+    return ResponseEntity.status(HttpStatus.OK).body(mapper.toPacienteResponseList(pacienteService.listAll()));
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<Paciente> findById(@PathVariable(name = "id") Long id) {
+  public ResponseEntity<PacienteResponse> findById(@PathVariable(name = "id") Long id) {
     Optional<Paciente> optPaciente = pacienteService.findById(id);
     if(optPaciente.isEmpty()){
       return ResponseEntity.notFound().build();
     }
 
-    return ResponseEntity.status(HttpStatus.OK).body(optPaciente.get());
+    return ResponseEntity.status(HttpStatus.OK).body(mapper.toPacienteResponse(optPaciente.get()));
   }
 
   @PutMapping
-  public ResponseEntity<Paciente> update(@RequestBody Paciente paciente) {
-    Paciente savedPaciente = pacienteService.save(paciente);
+  public ResponseEntity<PacienteResponse> update(@RequestBody PacienteRequest pacienteRequest) {
+    Paciente savedPaciente = pacienteService.save(mapper.toPaciente(pacienteRequest));
 
-    return ResponseEntity.status(HttpStatus.CREATED).body(savedPaciente);
+    return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toPacienteResponse(savedPaciente));
   }
 
   @DeleteMapping("/{id}")

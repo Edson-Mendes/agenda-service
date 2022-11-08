@@ -11,21 +11,26 @@ services:
       POSTGRES_PASSWORD: 1234
     ports:
       - "5432:5432"
-    networks:
-      - agenda-network
+    volumes:
+      - agenda-volume:/var/lib/postgresql/data
+#    networks:
+#      - agenda-network
 
-  pgadmin:
-    container_name: agenda-pgadmin4
-    image: dpage/pgadmin4
-    restart: always
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin@email.com
-      PGADMIN_DEFAULT_PASSWORD: 1234
-    ports:
-      - "15432:80"
-    networks:
-      - agenda-network
+#  pgadmin:
+#    container_name: agenda-pgadmin4
+#    image: dpage/pgadmin4
+#    restart: always
+#    environment:
+#      PGADMIN_DEFAULT_EMAIL: admin@email.com
+#      PGADMIN_DEFAULT_PASSWORD: 1234
+#    ports:
+#      - "15432:80"
+#    networks:
+#      - agenda-network
 
-networks:
-  agenda-network:
-    driver: bridge
+#networks:
+#  agenda-network:
+#    driver: bridge
+
+volumes:
+  agenda-volume:

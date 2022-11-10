@@ -23,8 +23,7 @@ public class PacienteController {
   private final PacienteMapper mapper;
 
   @PostMapping
-  public ResponseEntity<PacienteResponse> save(@RequestBody @Valid PacienteRequest pacienteRequest) {
-
+    public ResponseEntity<PacienteResponse> save(@RequestBody @Valid PacienteRequest pacienteRequest) {
     Paciente savedPaciente = pacienteService.save(mapper.toPaciente(pacienteRequest));
 
     return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toPacienteResponse(savedPaciente));

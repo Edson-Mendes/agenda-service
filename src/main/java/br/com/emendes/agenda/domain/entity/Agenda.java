@@ -23,4 +23,14 @@ public class Agenda {
   @ManyToOne
   private Paciente paciente;
 
+  @Override
+  public String toString() {
+    return "Agenda{" +
+        "id=" + id +
+        ", descricao='" + descricao + '\'' +
+        ", horario=" + horario +
+        ", dataCriacao=" + dataCriacao +
+        ", pacienteId=" + paciente.getId() +
+        '}';
+  }
 }

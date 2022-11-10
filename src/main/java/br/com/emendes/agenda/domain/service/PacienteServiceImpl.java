@@ -31,6 +31,19 @@ public class PacienteServiceImpl implements PacienteService {
   }
 
   @Override
+  public Paciente alterar(Long id, Paciente paciente) {
+    Optional<Paciente> optPaciente = this.findById(id);
+
+    if (optPaciente.isEmpty()) {
+      throw new BusinessException("Paciente não cadastrado!");
+    }
+
+    paciente.setId(id);
+
+    return save(paciente);
+  }
+
+  @Override
   public void delete(Long id) {
     pacienteRepository.deleteById(id);
   }

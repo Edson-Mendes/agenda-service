@@ -15,4 +15,5 @@ public interface PacienteService {
 
  Optional<Paciente> findById(Long id);
 
+  Paciente alterar(Long id, Paciente paciente);
 }

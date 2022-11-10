@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,7 +23,7 @@ public class PacienteController {
   private final PacienteMapper mapper;
 
   @PostMapping
-  public ResponseEntity<PacienteResponse> save(@RequestBody PacienteRequest pacienteRequest) {
+  public ResponseEntity<PacienteResponse> save(@RequestBody @Valid PacienteRequest pacienteRequest) {
 
     Paciente savedPaciente = pacienteService.save(mapper.toPaciente(pacienteRequest));
 
@@ -37,16 +38,17 @@ public class PacienteController {
   @GetMapping("/{id}")
   public ResponseEntity<PacienteResponse> findById(@PathVariable(name = "id") Long id) {
     Optional<Paciente> optPaciente = pacienteService.findById(id);
-    if(optPaciente.isEmpty()){
+    if (optPaciente.isEmpty()) {
       return ResponseEntity.notFound().build();
     }
 
     return ResponseEntity.status(HttpStatus.OK).body(mapper.toPacienteResponse(optPaciente.get()));
   }
 
-  @PutMapping
-  public ResponseEntity<PacienteResponse> update(@RequestBody PacienteRequest pacienteRequest) {
-    Paciente savedPaciente = pacienteService.save(mapper.toPaciente(pacienteRequest));
+  @PutMapping("/{id}")
+  public ResponseEntity<PacienteResponse> update(
+      @PathVariable(name = "id") Long id, @RequestBody PacienteRequest pacienteRequest) {
+    Paciente savedPaciente = pacienteService.alterar(id, mapper.toPaciente(pacienteRequest));
 
     return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toPacienteResponse(savedPaciente));
   }
